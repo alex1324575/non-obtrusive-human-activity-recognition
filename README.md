@@ -9,7 +9,7 @@
 
 ## Overview
 
-N.O. H.A.R.M.S. explored non-obtrusive human activity recognition for long-term-care settings. The project pipeline used pose detection to transform video into pose/keypoint representations, then used an MMAction2-compatible 3D action-recognition model to classify activities. The intended research direction was to support review of events such as falls, missed medication, and irregular movement - not to make clinical decisions autonomously.
+N.O. H.A.R.M.S. explored non-obtrusive human activity recognition for long-term-care settings. The project evaluated two complementary research paths: a YOLOv11-backed, rule-based pipeline for coarse location-dependent actions, and a pose/keypoint-based MMAction2 action-recognition pipeline. The intended research direction was to support review of events such as falls, missed medication, and irregular movement - not to make clinical decisions autonomously.
 
 The recovered artifacts include the action labels and a SlowOnly ResNet-50 training configuration. Raw videos, processed annotations, and model weights are intentionally excluded because they may be governed by the source dataset's access terms and could contain sensitive health-related imagery.
 
@@ -17,15 +17,19 @@ The recovered artifacts include the action labels and a SlowOnly ResNet-50 train
 
 ```mermaid
 flowchart LR
-    V[Restricted care-setting video] --> P[Pose detection]
-    P --> S[Pose / keypoint annotations]
-    S --> A[MMAction2 PoseDataset]
+    V[Restricted care-setting video] --> Y[YOLOv11 person detection]
+    Y --> Z[Room-specific activity zones]
+    Z --> G[Coarse activity event]
+    V --> P[Pose / keypoint extraction]
+    P --> A[MMAction2 PoseDataset]
     A --> M[SlowOnly ResNet-50 Recognizer3D]
-    M --> C[Activity class prediction]
-    C --> R[Human review / research analysis]
+    M --> C[Pose-based activity prediction]
+    G --> R[JSON/TCP client update]
+    C --> R
+    R --> H[Human review / research analysis]
 ```
 
-The project description identifies YOLO-based pose detection and an MMAction2 PoseC3D-style action-recognition workflow. The recovered configuration uses `Recognizer3D` with a `ResNet3dSlowOnly` backbone and pose heatmap inputs.
+The recovered configuration uses `Recognizer3D` with a `ResNet3dSlowOnly` backbone and pose heatmap inputs. The historical report describes YOLOv11 person detection combined with manually defined activity zones for coarse actions, while PoseC3D via MMAction2 was explored for location-independent, pose-based recognition.
 
 ## Staged demo outputs
 
@@ -54,6 +58,22 @@ The following stills are student-recorded demonstration samples supplied for pub
 
 See [the recovered configuration](configs/slowonly_r50_8xb32-u48-240e_k400-keypoint.py) and [reproducibility notes](docs/reproducibility.md).
 
+## Historical evaluation results
+
+The following results are reported in the team final report. They are retained with their evaluation scope and are not newly reproduced by this repository.
+
+| System | Evaluation scope | Reported result |
+| --- | --- | --- |
+| PoseC3D via MMAction2 | 30 unseen validation and test videos | Top-1 accuracy: 66.67%; Top-5 accuracy: 83.33% |
+| YOLOv11 rule-based activity annotation | Five videos; event timestamps compared with manually annotated ground truth using a 10-second window | Precision: 0.70; Recall: 0.74; F1: 0.72 |
+| YOLOv11 rule-based activity annotation | Aggregate result described in the report | 88% action-annotation accuracy; about 5 seconds time error |
+
+The report attributes many pose-based errors to low resolution, motion blur, occlusion, and confusion between visually similar actions. See [evaluation notes](docs/evaluation.md) for scope, caveats, and the recovered event counts.
+
+## Contribution
+
+Yanning Xu contributed to the PoseC3D/MMAction2 action-recognition path: setting up the model, configuring training parameters, extracting pose keypoints during video preprocessing, and preparing action labels and training-ready dataset inputs.
+
 ## Activity taxonomy
 
 The recovered `labels.txt` defines the following classes:
@@ -70,6 +90,8 @@ The recovered `labels.txt` defines the following classes:
 | 8 | Sit on bed |
 | 9 | Pick up book |
 | 10 | Room transitions |
+
+The historical final report refers to a nine-category manually labeled PoseC3D experiment, while the recovered `labels.txt` contains ten entries. This repository preserves the recovered label file as-is and treats the two class lists as related but distinct experiment iterations.
 
 ## Repository layout
 

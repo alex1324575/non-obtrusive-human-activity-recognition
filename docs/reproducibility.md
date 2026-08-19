@@ -6,6 +6,7 @@
 - A ten-class action vocabulary.
 - A checkpoint file named `best_acc_top1_epoch_89.pth`.
 - A restricted 120-video training archive.
+- A final report with historical evaluation results, but not the original metric logs.
 
 ## What is needed for a legitimate rerun
 
@@ -25,3 +26,6 @@ The configuration samples 48-frame clips, applies pose heatmap generation, uses 
 
 Before reporting renewed results, add a split manifest, class counts, a confusion matrix, per-class precision/recall, confidence intervals where appropriate, camera/environment holdout tests, and an error review focused on occlusion and care-room variation.
 
+## Historical versus renewed results
+
+The team report documents 66.67% Top-1 and 83.33% Top-5 accuracy for the pose-based experiment, along with an 88% aggregate accuracy claim for the rule-based pipeline. Those figures describe the historical project evaluation; they must not be presented as results of a newly reproduced run unless the original split, inputs, environment, and logs are recovered or a new protocol is executed.
