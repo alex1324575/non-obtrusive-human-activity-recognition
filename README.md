@@ -27,6 +27,18 @@ flowchart LR
 
 The project description identifies YOLO-based pose detection and an MMAction2 PoseC3D-style action-recognition workflow. The recovered configuration uses `Recognizer3D` with a `ResNet3dSlowOnly` backbone and pose heatmap inputs.
 
+## Staged demo outputs
+
+The following stills are student-recorded demonstration samples supplied for public portfolio use. They are not patient footage, clinical records, or a release of the underlying training dataset. Each frame illustrates a detected person, estimated pose keypoints, and the associated activity label.
+
+| Open fridge | Open bedside drawer | Lay on bed |
+| --- | --- | --- |
+| ![Pose detection demo labeled Open fridge](docs/assets/demo-open-fridge.jpg) | ![Pose detection demo labeled Open bedside table drawer](docs/assets/demo-open-bedside-drawer.jpg) | ![Pose detection demo labeled Lay on bed](docs/assets/demo-lay-on-bed.jpg) |
+
+| Sit on couch | Sit at table |
+| --- | --- |
+| ![Pose detection demo labeled Sit on couch](docs/assets/demo-sit-on-couch.jpg) | ![Pose detection demo labeled Sit at table](docs/assets/demo-sit-at-table.jpg) |
+
 ## Recovered configuration
 
 | Area | Recovered setting |
@@ -90,4 +102,3 @@ The recovered artifacts do not include a metric log, evaluation report, dataset 
 ## Citation and attribution
 
 This project was associated with the University of California, Davis and used Dr. Weakley's ICARE dataset under the applicable project access arrangement. Do not redistribute the dataset or derived artifacts without permission from the data owner and the relevant institution.
-
