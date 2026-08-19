@@ -1,0 +1,24 @@
+# Restricted datasets and derived video artifacts
+data/*
+!data/README.md
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# Model weights and training outputs
+models/*
+!models/README.md
+*.pth
+*.pt
+*.onnx
+work_dirs/
+checkpoints/
+
+# Python and tooling
+__pycache__/
+*.py[cod]
+.venv/
+.vscode/
+.idea/
+
